@@ -514,14 +514,279 @@ body {
 }
 .deal-anim { animation: dealFly 0.3s ease-out; }
 
-/* ===== Responsive ===== */
-@media (max-width: 1100px) {
-  #app { min-width: auto; }
-  .tile { width: 38px; height: 52px; }
-  .tile .tile-num { font-size: 16px; }
-  .tile .tile-suit { font-size: 11px; }
-  .tile .tile-honor { font-size: 19px; }
+/* ===== Responsive: Tablets (≤1024px, ~10-inch) ===== */
+@media (max-width: 1024px) {
+  /* --- App: remove hard constraints --- */
+  #app {
+    min-width: auto;
+    min-height: auto;
+  }
+
+  /* --- Header: compact --- */
+  #header {
+    padding: 4px 12px;
+  }
+  #header h1 {
+    font-size: 18px;
+    letter-spacing: 2px;
+  }
+  .header-info {
+    font-size: 11px;
+    gap: 10px;
+  }
+
+  /* --- Table: allow scroll on very small screens --- */
+  #table {
+    border-width: 8px;
+  }
+
+  /* --- Tiles: shrink proportionally (48×64 → 36×48) --- */
+  .tile {
+    width: 36px;
+    height: 48px;
+    border-radius: 4px;
+  }
+  .tile-num { font-size: 15px; }
+  .tile-suit { font-size: 11px; }
+  .tile-honor { font-size: 18px; }
+
   .tile-sm { width: 28px; height: 38px; }
+  .tile-sm .tile-num { font-size: 12px; }
+  .tile-sm .tile-suit { font-size: 9px; }
+  .tile-sm .tile-honor { font-size: 14px; }
+
+  .tile-xs { width: 22px; height: 30px; }
+  .tile-xs .tile-num { font-size: 10px; }
+  .tile-xs .tile-suit { font-size: 7px; }
+  .tile-xs .tile-honor { font-size: 11px; }
+
+  /* --- Player zones: tighter spacing --- */
+  .player-label {
+    font-size: 11px;
+    margin-bottom: 2px;
+  }
+  .tile-row {
+    gap: 2px;
+  }
+  .sub-hand-row {
+    margin-bottom: 2px;
+  }
+  .river-area {
+    max-width: 360px;
+    gap: 1px;
+    margin-top: 3px;
+    padding: 2px 4px;
+    min-height: 16px;
+  }
+  .river-label {
+    font-size: 8px;
+    margin-top: 1px;
+  }
+
+  /* Player zone fine-tuning to avoid overlap */
+  #p0-zone { bottom: 4px; }
+  #p1-zone { left: 4px; }
+  #p2-zone { top: 4px; }
+  #p3-zone { right: 4px; }
+
+  /* --- Drawn-card separator: scale with tiles --- */
+  .drawn-card-separator {
+    height: 48px;
+    margin: 0 2px;
+  }
+
+  /* --- Center zone: compact --- */
+  #center-zone {
+    gap: 8px;
+  }
+  .deck-stack {
+    width: 42px;
+    height: 56px;
+  }
+  .deck-stack .tile {
+    width: 36px;
+    height: 48px;
+  }
+  .deck-count {
+    font-size: 10px;
+    margin-top: 4px;
+  }
+
+  /* --- Action buttons: smaller --- */
+  .action-btn {
+    padding: 7px 12px;
+    font-size: 16px;
+    letter-spacing: 1px;
+    border-radius: 6px;
+  }
+
+  /* --- Footer: compact --- */
+  #footer {
+    padding: 4px 10px;
+    gap: 10px;
+  }
+  #footer-hint {
+    font-size: 11px;
+  }
+  #game-log {
+    font-size: 10px;
+    max-height: 36px;
+  }
+  #btn-new-game {
+    padding: 4px 10px;
+    font-size: 11px;
+  }
+  #btn-mute {
+    padding: 4px 10px;
+    font-size: 14px;
+    margin-right: 4px;
+  }
+
+  /* --- Action indicators: smaller --- */
+  .action-indicator {
+    font-size: 14px;
+    padding: 3px 10px;
+  }
+
+  /* --- Chi dialog: scale --- */
+  #chi-dialog {
+    gap: 10px;
+  }
+  .chi-dialog-title {
+    font-size: 18px;
+  }
+  .chi-options {
+    gap: 10px;
+  }
+  .chi-option-btn {
+    padding: 8px 14px;
+  }
+  .chi-dialog-cancel {
+    padding: 6px 18px;
+    font-size: 14px;
+  }
+
+  /* --- Game over overlay: scale --- */
+  #game-over-overlay {
+    gap: 12px;
+  }
+  #game-over-overlay .result-title {
+    font-size: 40px;
+    letter-spacing: 4px;
+  }
+  #game-over-overlay .result-sub {
+    font-size: 14px;
+  }
+  #game-over-overlay .btn-restart {
+    padding: 10px 32px;
+    font-size: 18px;
+    letter-spacing: 2px;
+  }
+}
+
+/* ===== Responsive: Phones (≤640px) ===== */
+@media (max-width: 640px) {
+  #header {
+    padding: 3px 8px;
+  }
+  #header h1 {
+    font-size: 15px;
+    letter-spacing: 1px;
+  }
+  .header-info {
+    font-size: 10px;
+    gap: 6px;
+  }
+
+  /* Tuned hover/select lifts for smaller tiles */
+  .tile:hover { transform: translateY(-3px); }
+  .tile.selected { transform: translateY(-6px); }
+
+  /* Further shrink tiles (48×64 → 28×38) */
+  .tile {
+    width: 28px;
+    height: 38px;
+    border-radius: 3px;
+    border-width: 1px;
+  }
+  .tile-num { font-size: 12px; }
+  .tile-suit { font-size: 9px; }
+  .tile-honor { font-size: 14px; }
+
+  .tile-sm { width: 22px; height: 30px; }
+  .tile-sm .tile-num { font-size: 10px; }
+  .tile-sm .tile-suit { font-size: 7px; }
+  .tile-sm .tile-honor { font-size: 11px; }
+
+  .tile-xs { width: 18px; height: 24px; }
+  .tile-xs .tile-num { font-size: 9px; }
+  .tile-xs .tile-suit { font-size: 6px; }
+  .tile-xs .tile-honor { font-size: 10px; }
+
+  .tile-row { gap: 1px; }
+  .river-area { max-width: 260px; }
+
+  .drawn-card-separator {
+    height: 38px;
+    margin: 0 1px;
+    width: 2px;
+  }
+
+  /* Center zone */
+  #center-zone {
+    gap: 4px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .deck-stack {
+    width: 32px;
+    height: 42px;
+  }
+  .deck-stack .tile {
+    width: 28px;
+    height: 38px;
+  }
+  .deck-count {
+    font-size: 9px;
+  }
+  #last-discard-spot .spot-label {
+    font-size: 9px;
+  }
+
+  /* Action buttons: mini row */
+  .action-btn {
+    padding: 5px 8px;
+    font-size: 14px;
+    letter-spacing: 0;
+    border-radius: 5px;
+  }
+  #action-panel {
+    gap: 3px;
+  }
+
+  /* Footer */
+  #footer {
+    padding: 3px 6px;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  #footer-hint { font-size: 10px; }
+  #game-log { font-size: 9px; max-height: 28px; }
+  #btn-new-game { padding: 3px 8px; font-size: 10px; }
+  #btn-mute { padding: 3px 8px; font-size: 12px; }
+
+  .action-indicator { font-size: 12px; padding: 2px 8px; }
+
+  /* Chi dialog */
+  .chi-dialog-title { font-size: 15px; }
+  .chi-options { gap: 6px; flex-wrap: wrap; justify-content: center; }
+  .chi-option-btn { padding: 6px 10px; }
+  .chi-dialog-cancel { padding: 5px 14px; font-size: 12px; }
+
+  /* Game over */
+  #game-over-overlay .result-title { font-size: 32px; }
+  #game-over-overlay .result-sub { font-size: 12px; }
+  #game-over-overlay .btn-restart { padding: 8px 24px; font-size: 16px; }
 }
 </style>
 </head>
