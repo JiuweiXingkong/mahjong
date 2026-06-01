@@ -685,7 +685,22 @@ body {
 }
 
 /* ===== Responsive: Phones (≤640px) ===== */
+/* On phones, abandon the cross-shaped absolute layout and switch to a
+   vertical stacked layout that is scrollable — no overlap possible. */
 @media (max-width: 640px) {
+  /* --- App: allow vertical scroll --- */
+  body {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  #app {
+    min-width: auto;
+    min-height: auto;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  /* --- Header: compact --- */
   #header {
     padding: 3px 8px;
   }
@@ -698,11 +713,97 @@ body {
     gap: 6px;
   }
 
-  /* Tuned hover/select lifts for smaller tiles */
-  .tile:hover { transform: translateY(-3px); }
-  .tile.selected { transform: translateY(-6px); }
+  /* --- Table: switch to vertical flex layout --- */
+  #table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1 1 auto;
+    padding: 4px 2px;
+    gap: 3px;
+    border-width: 6px;
+  }
+  #table::before { display: none; }  /* felt lines not needed on phone */
 
-  /* Further shrink tiles (48×64 → 28×38) */
+  /* --- Nuke absolute positioning on ALL table children --- */
+  .player-zone,
+  #center-zone {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    width: 100% !important;
+    max-width: 100%;
+  }
+
+  /* --- Stack order: center-toolbar, AI players, human --- */
+  #center-zone { order: 0; }
+  #p2-zone     { order: 1; }
+  #p1-zone     { order: 2; }
+  #p3-zone     { order: 3; }
+  #p0-zone     { order: 4; }
+
+  /* ================================================================
+     CENTER ZONE → compact horizontal toolbar
+     ================================================================ */
+  #center-zone {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 3px 6px;
+    background: rgba(0,0,0,0.35);
+    border-radius: 8px;
+    flex-shrink: 0;
+    z-index: 5;
+  }
+  .deck-stack {
+    width: 32px;
+    height: 42px;
+  }
+  .deck-stack .tile {
+    width: 28px;
+    height: 38px;
+  }
+  .deck-stack .tile:nth-child(2) { top: 2px; }
+  .deck-stack .tile:nth-child(3) { top: 4px; }
+  .deck-count {
+    font-size: 9px;
+    margin-top: 2px;
+  }
+  #last-discard-spot .spot-label {
+    font-size: 9px;
+  }
+  #last-discard-spot .tile {
+    width: 28px;
+    height: 38px;
+  }
+  #last-discard-spot .tile .tile-num { font-size: 12px; }
+  #last-discard-spot .tile .tile-suit { font-size: 9px; }
+  #last-discard-spot .tile .tile-honor { font-size: 14px; }
+
+  /* Action buttons: compact row */
+  #action-panel {
+    gap: 3px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .action-btn {
+    padding: 5px 8px;
+    font-size: 13px;
+    letter-spacing: 0;
+    border-radius: 5px;
+  }
+
+  /* ================================================================
+     TILES — shrink
+     ================================================================ */
   .tile {
     width: 28px;
     height: 38px;
@@ -723,8 +824,8 @@ body {
   .tile-xs .tile-suit { font-size: 6px; }
   .tile-xs .tile-honor { font-size: 10px; }
 
-  .tile-row { gap: 1px; }
-  .river-area { max-width: 260px; }
+  .tile:hover { transform: translateY(-2px); }
+  .tile.selected { transform: translateY(-5px); }
 
   .drawn-card-separator {
     height: 38px;
@@ -732,61 +833,120 @@ body {
     width: 2px;
   }
 
-  /* Center zone */
-  #center-zone {
-    gap: 4px;
+  /* ================================================================
+     AI PLAYER ZONES — ultra-compact single-line cards
+     ================================================================ */
+  .player-zone {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding: 2px 4px;
+    background: rgba(0,0,0,0.18);
+    border-radius: 6px;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+  .player-label {
+    font-size: 10px;
+    margin-bottom: 0;
+    margin-right: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .player-label .active-dot {
+    width: 6px;
+    height: 6px;
+    margin-right: 2px;
+  }
+  .tile-row {
+    gap: 1px;
     flex-wrap: wrap;
     justify-content: center;
   }
-  .deck-stack {
-    width: 32px;
-    height: 42px;
+  .sub-hand-row {
+    margin-bottom: 0;
+    opacity: 0.9;
   }
-  .deck-stack .tile {
-    width: 28px;
-    height: 38px;
+  .river-area {
+    max-width: none;
+    gap: 1px;
+    margin-top: 0;
+    padding: 1px 3px;
+    min-height: auto;
+    background: none;
   }
-  .deck-count {
-    font-size: 9px;
-  }
-  #last-discard-spot .spot-label {
-    font-size: 9px;
-  }
-
-  /* Action buttons: mini row */
-  .action-btn {
-    padding: 5px 8px;
-    font-size: 14px;
-    letter-spacing: 0;
-    border-radius: 5px;
-  }
-  #action-panel {
-    gap: 3px;
+  .river-label {
+    font-size: 8px;
+    margin-top: 0;
+    margin-right: 2px;
+    flex-shrink: 0;
   }
 
-  /* Footer */
+  /* ================================================================
+     HUMAN PLAYER ZONE — full width, most important
+     ================================================================ */
+  #p0-zone {
+    flex-direction: column;
+    padding: 6px 4px;
+    gap: 4px;
+    background: rgba(255,215,0,0.08);
+    border: 1px solid rgba(240,214,138,0.25);
+  }
+  #p0-zone .player-label {
+    font-size: 12px;
+    margin-right: 0;
+    margin-bottom: 2px;
+  }
+  #p0-zone .tile-row {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  #p0-zone .river-area {
+    max-width: 100%;
+  }
+
+  /* ================================================================
+     ACTION INDICATORS — float above zone
+     ================================================================ */
+  .action-indicator {
+    font-size: 12px;
+    padding: 2px 8px;
+    position: absolute;
+    top: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* ================================================================
+     FOOTER
+     ================================================================ */
   #footer {
     padding: 3px 6px;
-    gap: 6px;
+    gap: 4px;
     flex-wrap: wrap;
+    flex-shrink: 0;
   }
   #footer-hint { font-size: 10px; }
-  #game-log { font-size: 9px; max-height: 28px; }
+  #game-log { font-size: 9px; max-height: 26px; }
   #btn-new-game { padding: 3px 8px; font-size: 10px; }
   #btn-mute { padding: 3px 8px; font-size: 12px; }
 
-  .action-indicator { font-size: 12px; padding: 2px 8px; }
-
-  /* Chi dialog */
+  /* ================================================================
+     OVERLAYS & DIALOGS
+     ================================================================ */
+  #chi-dialog { gap: 8px; }
   .chi-dialog-title { font-size: 15px; }
   .chi-options { gap: 6px; flex-wrap: wrap; justify-content: center; }
   .chi-option-btn { padding: 6px 10px; }
   .chi-dialog-cancel { padding: 5px 14px; font-size: 12px; }
 
-  /* Game over */
-  #game-over-overlay .result-title { font-size: 32px; }
+  #game-over-overlay { gap: 10px; }
+  #game-over-overlay .result-title { font-size: 30px; letter-spacing: 3px; }
   #game-over-overlay .result-sub { font-size: 12px; }
-  #game-over-overlay .btn-restart { padding: 8px 24px; font-size: 16px; }
+  #game-over-overlay .btn-restart { padding: 8px 24px; font-size: 16px; letter-spacing: 2px; }
 }
 </style>
 </head>
